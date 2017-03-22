@@ -1,0 +1,77 @@
+Austin Herring
+CS281 - Systems Architecture I
+Lab 6: VHDL Clock
+email: awh44@drexel.edu
+
+The purpose of this project was to create several remaining components in VHDL for a
+single-cycle implementation of the MIPS architecture, including a memory unit, a register
+file, and a control unit. All work for this project was done on tux, and all programs were
+compiled using the makefile previously provided, so there's nothing special to know about
+running anything.
+
+There was an assumption made in the creation of the memory file which creates a minor
+limitation; in theory, the program could have access to 2^32 / 4 memory locations,
+because the address input to the ALU is 32 bits, and each memory location is separated
+by 4. However, this was somewhat infeasible, so the memory was limited to a more reasonable
+32 locations.
+
+After creating the three components, all three were tested independently. The memory file
+was essentially provided, though it required a clock and changing it to allow for access
+to more memory elements (32, as outlined above). It was tested that the data output was
+only changed when there was a rising clock edge and the MemRead control was asserted (and
+it was also checked that the output was read from the correct register). It was also
+checked that memory values were only changed when there was a rising clock edge and the
+MemWrite control was asserted (and that the correct register was updated with the correct
+value from write_data). All of these tests can be seen in the provided
+memory_waveforms.png. The memory file was also tested by checking that all of the above
+worked on different memory locations, though these are not documented in the screenshot.
+
+The register file was tested in a very similar way. First it was assured that the correct
+registers, based on the Read register 1 and Read register 2 inputs, were read on each
+rising clock edge and that the Read data 1 and Read data 2 outputs received the correct
+values from those registers. Next, it was assured that if RegWrite was asserted that the
+register indicated by the Write register input received the correct value of the Write
+data input on a rising clock edge, and it was assured these writes occured only when
+RegWrite was asserted. These covered the two major features of the register file, the
+ability to read out from registers and write to them, so after assuring these features
+worked correctly, the register file was considered to work correctly. The results of these
+tests can be seen in register_waveforms.png.
+
+Finally, the control unit was tested by feeding it instructions whose opcodes and/or
+function codes corresponded to the instructions add, sub, and, or, slt, lw, sw, beq, and j.
+(Each of the last four instructions were also given "function codes" that corresponded to
+one of the instructions which actually require function codes to assure that their control
+values wouldn't be affected by the last 6 bits of their instructions as well.) Then the
+different control lines were checked to assure that they were asserted and deasserted (and
+given don't care values) as they needed. Once it was assured these values were correct,
+it was assured the control unit was correct. These tests can be seen in
+control_waveforms.png.
+
+There is nothing particularly special about the provided programs. Finishing them was
+mostly very easy. The memory file had been provided almost entirely completed, though
+it required minor alterations, such as adding more memory locations and a clock input.
+The register file was also simple with the model of the memory already provided; the form
+of memory.vhdl was followed with alterations added to tailor it to registers instead of
+memory. Finally, the control unit was very easy to complete as well; it only needed a list
+of when/else statements for each control output.
+
+In the future, nothing probably has to be changed for the project. It was very helpful in
+illustrating how the three different components work, and, as mentioned, it was still
+relatively straightforward. (However, the one changed that might be helpful is rearranging
+the due dates in some way.)
+
+Files turned in:
+1. alu32s.vhd (structural model for 32-bit ALU)
+   nor32.vhd (32 bit or gate used by structural ALU)
+2. memory.vhd (memory unit)
+3. reg_file.vhd (register file)
+4. control.vhd (control unit)
+5. Screenshots of the tests for each component:
+   memory_waveforms.png
+   register_waveforms.png
+   control_waveforms.png
+6. Testbenches for the three components:
+   mem_tb.vhd
+   reg_tb.vhd
+   control_tb.vhd
+7. description.txt (this file)

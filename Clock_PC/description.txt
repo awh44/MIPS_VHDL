@@ -1,0 +1,43 @@
+Austin Herring
+CS281 - Systems Architecture I
+Lab 6: VHDL Clock
+email: awh44@drexel.edu
+
+This lab was spent trying to create virtual representations of a clock and a program counter in
+VHDL. All work was done on the tux machines, and the programs were run with testbenches by using
+the makefile given in a previous lab, so there is nothing special to know about running them.
+
+Finishing this lab was very easy. Though it took playing with how processes and variables work a
+little bit, once those were understood, it was possible to create both the clock and the PC easily.
+
+The clock was tested simply by creating a testbench and wiring a signal to the clock output. Then
+it was assured that the clock signal was asserted and deasserted at the regular intervals it was
+supposed to, and it did.
+
+After that, the PC was tested by creating a testbench and wiring the VHDL clock to the clock input
+of the PC. Then the input values to the PC were changed at random intervals, and it was assured
+that the output changed only on rising clock edges (and that when it did change, it changed to the
+correct value), and it did.
+
+The results of the tests described above can be seen in the two provided waveform images,
+clock_waveform.png and pc_waveforms.png
+
+There is nothing particularly special or interesting about the lab, and the experience completing
+was relatively straightforward. At this point, using VHDL has become rather routine. However,
+as mentioned above, it did require becoming familiar with processes. However, after some testing
+with some basic programs and some Googling, it revealed itself to be an easily understandable
+construct. Once it was understood, everything else was rather straightforward; the clock only
+needed to NOT itself repeatedly after given intervals, and the PC only required a simple if
+statement so its output changed only on rising clock edges.
+
+In the future, this lab probably does not have to be changed very much. (Though it should likely be
+moved up in the term if possible, so that it's completed before the other projects requiring a clock
+are (supposed to be) due.)
+
+How files cover "What to Hand In":
+1. clock.vhd
+2. pc.vhd
+3. clock_waveform.png
+	pc_waveforms.png
+	(tb_pc.vhd and tb_clock.vhd also included)
+4. description.txt

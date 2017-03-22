@@ -1,0 +1,98 @@
+Austin Herring
+Systems Architecture I
+Lab 5: 32-bit ALU
+email: awh44@drexel.edu
+
+The purpose of this lab was to create a MIPS style 32-bit ALU in VHDL that
+has support for and, or, addition, subtraction, overflow detection, slt, and
+a zero flag. This was done by modifying the 1-bit ALU created for the
+previous lab, stringing 32 of these ALUs together in VHDL, and then testing
+that new 32-bit ALU. The project was completed on the tux machines; all
+source code as written in vim, and the program was tested using GTKWave
+(using the provided makefile). There's nothing necessarily special about
+running the program.
+
+The 32-bit ALU was completed by first adding a few more features to the
+1-bit ALU. The first of these was simply the Less input, which became a new
+select output when the Operation input is "11". The second added feature is
+the Set output, which is set when a - b < 0. A correct formula had to be
+derived from this, and it was determined that Set should be equivalent to
+Overflow xor Result, when Result is the result of subtraction. (The file for
+this ALU is alu1b.vhd.)
+
+Because it would be difficult or nigh-useless to test these featues in a
+single bit ALU, work was next begun on the 32-bit ALU (alu32s.vhd). This
+mostly just required "hooking up" 32 1-bit ALUs by connecting the CarryOut
+of one to the CarryIn of the next, as well as connecting the Set of the last
+ALU to the less of the first. Most of the design is documented in comments
+in the file. One final thing that had to be done to complete the 32-bit ALU
+was finish to the Zero output. Because Zero is only set when all 32 bits of
+result are '0', this simply required creating a 32 input nor gate
+(nor32.vhd) and feeding it Result. At that point, the ALU was ready for
+testing.
+
+Because AND and OR had been proven to work with the 1-bit ALUs, these were
+not tested extensively, because each ALU acts independent of the other 32 in
+determining its output. Stringing them toegether would therefore not affect
+their functioning. To test them, they were simply fed a few simple inputs,
+and the outputs were determined to have bits asserted only when both inputs
+were asserted (and) or when either was asserted (or). The testbenches for
+these were and_tb_alu32.vhd and or_tb_alu32.vhd (and the waveform screencaps
+are and32.png and or32.png).
+
+Addition, subtraction, and overflow detection were all tested at the same
+time. Sums were done on inputs a and b that were:
+	0 and 0
+	positive and positive
+	positive and positive and caused overflow (for addition)
+	positive and negative
+	positive and negative and caused overflow (for subtraction)
+	negative and positive
+	negative and negative and caused overflow (for subtraction)
+	negative and negative that caused overflow (for addition)
+	negative and postive.
+In all of these cases, Result and Overflow gave the expected values. In
+addition, the CarryOut was examined during these tests and also assured to
+always have the correct value. The Zero flag was also observed during these
+tests (as well as all others) to assure that it was always asserted when the
+final result was 0 and that was only when it was asserted. The testbench for
+these tests is add_tb_alu32s.vhd (and the waveform screencap is add32.png).
+
+Finally, the slt feature of the ALU was tested. It was tested by giving a
+and b inputs that were:
+	+ and + where a = b
+	+ and + where a > b
+	+ and + where a < b
+	- and - where a = b
+	- and - where a > b
+	- and - where a < b
+	+ and -
+	- and +
+where + means "positive," - means "negative," and the first column
+corresponds to a and the second to b. These are all the different "types" of
+inputs that the ALU might recieve, and it always gave the expected value;
+Result was 1 only when a was truly less than b.
+
+These variety of tests, which hit upon all major types of configurations to
+the inputs of the ALU, appear to demonstrate that it is working correctly.
+
+Completing this task was rather simple. The 1-bit ALU had already been
+finished, and this simply required making a few modifications to string 32
+of them together, which was a very easy task. Understanding how the Set
+output worked was a little difficult at first, but after working through
+smaller sized problems (i.e., 4 bit addition), it became clearer to me and I
+was able to create the functioning ALU. It was certainly interesting
+learning how an ALU is put together by actually building a virtual one as
+well. Because of the relative lack of difficulty  and the usefulness of this
+lab, it likely does not have to be changed for future students.
+
+Files turned in:
+1. alu32s.vhd - structural model for 32-bit ALU
+2. alu1b.vhd - behavioral model for 1-bit ALU used by 32-bit one
+3. nor32.vhd - 32-input nor gate used by the 32-bit ALU
+4. and_tb_alu32s.vhd and and32.png - testbench and waveforms for and testing
+5. or_tb_alu32s.vhd and or32.png - testbench and waveforms for or testing
+6. add_tb_alu32s.vhd and add32.png - testbench and waveforms for addition
+		and subtraction testing (including Overflow and CarryOut, and Zero)
+7. slt_tb_alu32s.vhd and slt.png - testbench and waveforms for slt testing
+		(also includes Zero testing)

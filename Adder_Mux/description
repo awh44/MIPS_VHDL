@@ -1,0 +1,52 @@
+Austin Herring
+Systems Architecture I
+Lab 3: VHDL Mux Lab
+email: awh44@drexel.edu
+
+This lab was spent becoming acquianted with VHDL, first by examining a
+half-adder and then by constructing a multiplexer, done both behaviorally
+and structurally. All of the work for this lab was done on the tux machines.
+There is nothing special about running or understanding the work. (Though
+no delays were used when constructing the behavioral multiplexer.) They can
+be run by putting the source files (multiplexerb.vhd, multiplexers.vhd,
+not_2.vhd, and_3.vhd, or_4.vhd) in the src directory, the test bench for the file
+to be tested (tb_multiplexerb.vhd for the behavioral, tb_multiplexers.vhd
+for the structural) in the testbench folder, and using the Makefile with the
+correct value given to TESTBENCH on the command line.
+
+The multiplexers were tested by creating two test benches. In each
+testbench, a reasonable number of inputs were tested: for each select
+combination (00, 01, 10, 11), the corresponding input was first set to 0
+and then switched to 1. Then the output signal was checked to assure it
+was always following the correct input at any given time. I attempted to
+test *all* combinations of inputs (i.e., 000000, 000001, ..., 111111), but,
+there being 64 different possible combinations, this proved much too
+difficult. I believe the inputs I finally settled on sufficiently prove that
+the multiplexers are working correctly.
+
+Completing this lab was slightly difficult. After finally figuring out how
+to run the GHDL/GTKWave programs, which was in itself difficult,
+understanding how the behavioral half-adder, and the related testbench, were
+written was fairly simple, however. Writing the behavioral mux by following
+this example was rather easy. It simply required "copying" the half-adder
+and replacing the logic with the logic of a multiplexer, which isn't very
+complex. Writing the structural multiplexer was slightly more complex
+however; the halfadders.vhd example for a structural file did not seem
+overly clear to me. However, after studying it for a while, I was able to
+deduce how to write something in VHDL structurally, and was able to
+construct the mux. After that, with my knowledge from having written the two
+muxes, I was able to come up with the two testbenches rather quickly, and
+after testing the two with them, they appeared to be correct.
+
+There is probably nothing major that has to be done to alter this lab in the
+future. Maybe slightly more discussion on how the structural files work
+would be beneficial.
+
+How submitted files cover "What to Hand In":
+1. halfadder_waveforms.png
+2. behavioral: multiplexerb.vhd
+	structural: multiplexers.vhd, with not_2.vhd, and_3.vhd, or_4.vhd
+3. behavioral: tb_multiplexerb.vhd
+					behavioral_multiplexer_waveforms.vhd
+	structural: tb_multiplexers.vhd
+					structural_multiplexer_waveforms.vhd
